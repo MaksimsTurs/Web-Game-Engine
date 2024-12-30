@@ -1,0 +1,10 @@
+:root {
+	--transition-very-fast: 0.075s;
+
+	--ui-root-color: rgb(94, 73, 198);
+	--ui-root-color-hover: rgb(36, 36, 116);
+
+	--ui-border-radius-container: 5px;
+
+	--ui-flex-gap-small: 0.25rem;
+}

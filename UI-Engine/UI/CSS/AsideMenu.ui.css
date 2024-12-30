@@ -1,0 +1,43 @@
+.aside-menu-container {
+	background-color: var(--ui-root-color-hover);
+	position: relative;
+	width: 10rem;
+	height: 100%;
+}
+
+#aside-menu-contextmenu {
+	position: absolute;
+	left: 0%;
+	top: 0%;
+	z-index: 9;
+	width: 9rem;
+	background-color: var(--ui-root-color);
+	border-radius: var(--ui-border-radius-container);
+	box-shadow: 0 2px 3px var(--ui-root-color);
+	overflow: hidden;
+}
+
+.aside-menu-contextmenu-button {
+	transition: all var(--transition-very-fast);
+	padding: 0.5rem 1rem;
+	cursor: pointer;
+	color: white;
+	width: 100%;
+}
+
+.aside-menu-contextmenu-button:hover {
+	transition: all var(--transition-very-fast);
+	background-color: var(--ui-root-color-hover);
+}
+
+.aside-menu-nodes-list {
+	flex-grow: 1;
+	height: 100%;
+}
+
+.aside-menu-resizer {
+	box-shadow: 0 2px 3px var(--ui-root-color);
+	width: 0.5rem;
+	height: 100%;
+	cursor: e-resize;
+}

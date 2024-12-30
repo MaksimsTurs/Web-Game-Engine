@@ -1,0 +1,42 @@
+.navigator-container {
+	background-color: var(--ui-root-color);
+	box-shadow: 0 2px 3px var(--ui-root-color);
+}
+
+.navigator-menu-button-wrapper {
+	width: fit-content !important;
+	position: relative;
+}
+
+.navigator-menu-button-wrapper:hover .navigator-menu-list {
+	display: block;
+}
+
+.navigator-menu-button {
+	transition: all var(--transition-very-fast);
+	background-color: var(--ui-root-color);
+	padding: 0.75rem 1.75rem;
+	width: 100%;
+	text-align: center;
+	color: white;
+	cursor: pointer;
+	position: relative;
+	z-index: 10;
+}
+
+.navigator-menu-button:hover {
+	transition: all var(--transition-very-fast);
+	background-color: var(--ui-root-color-hover);
+	box-shadow: 0 2px 3px var(--ui-root-color);
+}
+
+.navigator-menu-list {
+	background-color: var(--ui-root-color);
+	box-shadow: 0 2px 3px var(--ui-root-color);
+	position: absolute;
+	display: none;
+	left: 0%;
+	top: 100%;
+	width: 12rem;
+	overflow: hidden;
+}

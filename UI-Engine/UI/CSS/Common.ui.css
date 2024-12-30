@@ -1,0 +1,28 @@
+.rflex-none-none-none {
+	display: flex;
+}
+
+.rflex-center-center-none {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.rflex-center-center-small {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.25rem;
+}
+
+.rflex-center-spacebetween-none {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.cflex-none-none-small {
+	display: flex;
+	flex-direction: column;
+	gap: var(--ui-flex-gap-small);
+}
