@@ -19,7 +19,7 @@ class ComponentConstructor {
 	}
 
 	getStyleAsNumber(styleName) {
-		return parseFloat(this.#node.style[styleName])
+		return +(this.#node.style[styleName])
 	}
 
 	getStyleAsString(styleName) {
@@ -41,11 +41,12 @@ class ComponentConstructor {
 		
 		while(index < length) {
 			this.removeEvent(this.#eventReferences[index].name, this.#eventReferences[index].callback)
+			this.#eventReferences.shift()
 			index++
 		}
 
 		this.#node.remove()
-		this.#eventReferences = []
+		this.#node = null
 	}
 }
 

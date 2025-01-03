@@ -27,7 +27,6 @@
 .navigator-menu-button:hover {
 	transition: all var(--transition-very-fast);
 	background-color: var(--ui-root-color-hover);
-	box-shadow: 0 2px 3px var(--ui-root-color);
 }
 
 .navigator-menu-list {

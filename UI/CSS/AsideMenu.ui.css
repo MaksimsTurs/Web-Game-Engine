@@ -1,0 +1,24 @@
+.aside-menu-container {
+	background-color: var(--ui-root-color-hover);
+	position: relative;
+	width: 10rem;
+	height: 100%;
+}
+
+.aside-menu-nodes-list {
+	flex-grow: 1;
+	height: 100%;
+}
+
+.aside-menu-resizer {
+	box-shadow: 0 2px 3px var(--ui-root-color);
+	transition: all var(--transition-very-fast) ease;
+	width: 0.5rem;
+	height: 100%;
+	cursor: e-resize;
+}
+
+.aside-menu-resizer:active {
+	transition: all var(--transition-very-fast) ease;
+	background-color: var(--ui-root-color);
+}

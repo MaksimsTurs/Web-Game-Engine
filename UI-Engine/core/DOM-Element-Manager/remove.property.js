@@ -1,5 +1,6 @@
 import ComponentConstructor from "../ComponentConstructor.core.js"
 
+//Delete HTML elements and Components that was created with ComponentConstructor
 export default function remove(...componentReferences) {
 	let index = 0
 	let length = componentReferences.length

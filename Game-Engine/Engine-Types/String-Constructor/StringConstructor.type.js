@@ -7,7 +7,7 @@ class StringConstructor {
   constructor(defaultValue, isModifable = true) {
     this.#str = defaultValue
 		
-		if(!isModifable) {
+		if(typeof isModifable === "boolean" && !isModifable) {
 			Object.freeze(this)
 		}
   }

@@ -1,39 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<!-- Root -->
 	<link rel="stylesheet" href="./index.css">
 	<!-- Common -->
-	<link rel="stylesheet" href="./UI-Engine/UI/CSS/Common.ui.css">
-	<link rel="stylesheet" href="./UI-Engine/UI/CSS/Variabels.ui.css">
+	<link rel="stylesheet" href="./UI/CSS/Common.ui.css">
+	<link rel="stylesheet" href="./UI/CSS/Variabels.ui.css">
 	<!-- UI CSS -->
-	<link rel="stylesheet" href="./UI-Engine/UI/CSS/Navigator.ui.css">
-	<link rel="stylesheet" href="./UI-Engine/UI/CSS/AsideMenu.ui.css">
-	<link rel="stylesheet" href="./UI-Engine/UI/CSS/GameNodesModal.ui.css">
+	<link rel="stylesheet" href="./UI/CSS/Navigator.ui.css">
+	<link rel="stylesheet" href="./UI/CSS/AsideMenu.ui.css">
+	<link rel="stylesheet" href="./UI/CSS/AsideContextMenu.ui.css">
+	<link rel="stylesheet" href="./UI/CSS/GameNodesModal.ui.css">
+	<link rel="stylesheet" href="./UI/CSS/GameNodesModalList.ui.css">
+	<!-- Default -->
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body id="body">
 	<nav class="navigator-container rflex-none-none-none">
-		<div id="project-actions-container" class="navigator-menu-button navigator-menu-button-wrapper">
+		<div id="project-actions-button" class="navigator-menu-button navigator-menu-button-wrapper">
 			Menu
-			<ul id="project-actions-list" class="navigator-menu-list"></ul>
 		</div>
 	</nav>
 	<main>
-		<div class="game-nodes-modal game-nodes-modal-hidden rflex-center-center-none">
-			<div class="game-nodes-modal-body">
-				<div class="game-nodes-modal-body-header rflex-center-spacebetween-none">
-					<div class="rflex-center-center-small">
-						<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-workflow"><rect width="8" height="8" x="3" y="3" rx="2"/><path d="M7 11v4a2 2 0 0 0 2 2h4"/><rect width="8" height="8" x="13" y="13" rx="2"/></svg>
-						<p>Node types</p>
-					</div>
-					<button class="game-nodes-modal-body-close-button rflex-center-center-none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
-				</div>
-				<div id="game-nodes-list" class="cflex-none-none-small"></div>
-			</div>
-		</div>
 		<aside class="aside-menu-container rflex-none-none-none">
-			<section id="aside-menu-contextmenu"></section>
 			<div class="aside-menu-nodes-list"></div>
-			<div class="aside-menu-resizer"></div>
+			<button class="aside-menu-resizer"></b>
 		</aside>
 	</main>
 	<script type="module" src="./index.js"></script>

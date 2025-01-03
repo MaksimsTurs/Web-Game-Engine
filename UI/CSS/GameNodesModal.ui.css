@@ -46,17 +46,3 @@
 	opacity: 0;
 	visibility: hidden;
 }
-
-.game-nodes-list-item {
-	border-radius: var(--ui-border-radius-container);
-	transition: all var(--transition-very-fast) ease;
-	text-align: left;
-	padding: 0.5rem;
-	cursor: pointer;
-}
-
-.game-nodes-list-item:hover {
-	transition: all var(--transition-very-fast) ease;
-	background-color: var(--ui-root-color-hover);
-	color: white;
-}
