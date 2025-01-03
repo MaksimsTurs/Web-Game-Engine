@@ -1,8 +1,11 @@
+import UIElement from "../UI-Engine/core/UIElement.core.js"
+import DOMElementManager from "../UI-Engine/core/DOM-Element-Manager/DOMElementManager.core.js"
+
 import * as GameNodesModal from "./GameNodesModal.ui.js"
+import * as AsideMenu from "./AsideMenu.ui.js"
 
 import { NODE_TYPES_ARRAY, MIN_NODE_NAME_LENGTH } from "../Game-Engine/const-enum.core.js"
-
-import DOMElementManager from "../UI-Engine/core/DOM-Element-Manager/DOMElementManager.core.js"
+import { LOCAL_STORAGE_ADD_NODE_POSITION_KEY } from "./const.js"
 
 let GameNodesListForm = null
 let GameNodesList = null
@@ -15,16 +18,17 @@ let NewNodeTypeButtons = []
 let newGameNodeData = null
 
 export function DeinitGameNodesModalList() {
+	//Remove nodes
 	DOMElementManager.remove(
 		...NewNodeTypeButtons,
 		NewNodeValidationError,
-		NewNodeNameInput,
 		NewNodeFormSubmitButton,
 		NewNodeInputAndButtonContainer,
+		NewNodeNameInput,
 		GameNodesList,
 		GameNodesListForm
 	)
-
+	//Remove references
 	GameNodesListForm = null
 	GameNodesList = null
 	NewNodeNameInput = null
@@ -32,107 +36,139 @@ export function DeinitGameNodesModalList() {
 	NewNodeInputAndButtonContainer = null
 	NewNodeValidationError = null
 	NewNodeTypeButtons = []
-
 	newGameNodeData = null
+}
+
+function insertNodeGameNode(event) {
+	event.preventDefault()
+
+	if(NewNodeNameInput.get("value").length < MIN_NODE_NAME_LENGTH) {
+		NewNodeValidationError.set("textContent", "Node name is not correct!")
+		NewNodeValidationError.set("removeAttribute", "hidden")
+	} else if(!newGameNodeData) {
+		NewNodeValidationError.set("textContent", "You need to select node type!")
+		NewNodeValidationError.set("removeAttribute", "hidden")
+	} else {	
+		//Create aside menu node 
+		let data = { type: newGameNodeData.type, typeName: newGameNodeData.typeName, name: NewNodeNameInput.get("value"), childrens: {}}
+		
+		AsideMenu.getModuleGlobalVar("AsideMenuNodes").update(tree => {
+			let position = localStorage.getItem(LOCAL_STORAGE_ADD_NODE_POSITION_KEY)
+
+			if(position === "root") {
+				return data
+			}
+		})
+
+		//Remove nodes modal list
+		DeinitGameNodesModalList()
+		//Hidde nodes modal
+		GameNodesModal.getModuleGlobalVar("GameNodesModalContainer").getDOMElement().classList.add("game-nodes-modal-hidden")
+	}
+}
+
+function inputNewNodeName() {
+	if(isAllNodeDataWasSetted()) {
+		NewNodeFormSubmitButton.set("removeAttribute", "disabled")
+	} else {
+		NewNodeFormSubmitButton.set("setAttribute", "disabled", "true")
+	}
+}
+
+function isAllNodeDataWasSetted() {
+	return NewNodeNameInput.get("value").length > MIN_NODE_NAME_LENGTH && newGameNodeData
 }
 
 export function InitGameNodesModalList() {
 	const SELECTED_ITEM_SELECTOR = "game-nodes-list-item-selected"
 	const CLFLEX_CONTAINER_SELECTOR = "cflex-none-none-small"
 
-	//Init root elements
-	GameNodesListForm = document.createElement("form")
-	GameNodesList = document.createElement("div")
+	//Create input
+	NewNodeNameInput = new UIElement("input")
+	NewNodeNameInput
+		.set("setAttribute", "placeholder", "New node name")
+		.set("setAttribute", "name", "node-name")
+		.set("setAttribute", "class", "game-nodes-node-name-input")
+		.addEvent("input", inputNewNodeName)
+	
+	//Create submit button
+ 	NewNodeFormSubmitButton = new UIElement("button")
+	NewNodeFormSubmitButton
+		.set("setAttribute", "disabled", "true")
+		.set("setAttribute", "class", "game-nodes-form-submit-button")
+		.set("textContent", "Insert new node")
 
-	//Set css classes
-	GameNodesListForm.setAttribute("class", CLFLEX_CONTAINER_SELECTOR)
-	GameNodesList.setAttribute("class", CLFLEX_CONTAINER_SELECTOR)
-
+	//Create validation error message container
+	NewNodeValidationError = new UIElement("section")
+	NewNodeValidationError
+		.set("setAttribute", "hidden", "true")
+		.set("setAttribute", "class", "game-nodes-input-error")
+	
+	//Create wrapper for input, submit button and validation container
+	NewNodeInputAndButtonContainer = new UIElement("div")
+	NewNodeInputAndButtonContainer
+		.set("setAttribute", "class", `game-nodes-new-node-data-container ${CLFLEX_CONTAINER_SELECTOR}`)
+		.set("append", NewNodeNameInput.getDOMElement(), NewNodeValidationError.getDOMElement(), NewNodeFormSubmitButton.getDOMElement())
+	
+	//Create nodes list
+	GameNodesList = new UIElement("div")
+	GameNodesList.
+		set("setAttribute", "class", CLFLEX_CONTAINER_SELECTOR)
+	
+	//Create node list items
 	let index = 0
 	let length = NODE_TYPES_ARRAY.length
-	
-	//Create and append buttons of game nodes types in to "GameNodesList"
+
 	while(index < length) {
-		const button = document.createElement("button")
+		const Button = new UIElement("button")
 		const NODE_ITEM = NODE_TYPES_ARRAY[index]
 
-		button.classList.add("game-nodes-list-item")
-		button.setAttribute("type", "button")
-		button.textContent = NODE_ITEM.typeName.get()
-		button.addEventListener("click", function(event) {
-			const clickedNode = event.target
-			const isClickNodeSelected = clickedNode.classList.contains(SELECTED_ITEM_SELECTOR)
-			
-			if(isClickNodeSelected) {
-				//Remove selected class selector when clicking of selected item
-				clickedNode.classList.remove(SELECTED_ITEM_SELECTOR)
-			} else {
-				//Remove selected class selector from another element and set this selector to clicked item
-				GameNodesList.querySelector(`.${SELECTED_ITEM_SELECTOR}`)?.classList?.remove(SELECTED_ITEM_SELECTOR)
-				clickedNode.classList.add(SELECTED_ITEM_SELECTOR)
-			}
+		Button
+			.set("setAttribute", "type", "button")
+			.set("setAttribute", "class", "game-nodes-list-item")
+			.set("append", NODE_ITEM.typeName.get())
+			.addEvent("click", function(event) {
+				const clickedNode = event.target
+				const isClickedNodeSelected = clickedNode.classList.contains(SELECTED_ITEM_SELECTOR)
+				
+				if(isClickedNodeSelected) {
+					clickedNode.classList.remove(SELECTED_ITEM_SELECTOR)
+					newGameNodeData = null
+					NewNodeFormSubmitButton.set("setAttribute", "disabled", "true")
+				} else {
+					//Remove SELECTED_ITEM_SELECTOR from element and add him to another
+					GameNodesList.getDOMElement().querySelector(`.${SELECTED_ITEM_SELECTOR}`)?.classList?.remove(SELECTED_ITEM_SELECTOR)
+					clickedNode.classList.add(SELECTED_ITEM_SELECTOR)
+					newGameNodeData = { type: NODE_ITEM.type, typeName: NODE_ITEM.typeName, name: "", childrens: {}}
 
-			//Set selected node type for new node
-			newGameNodeData = { type: NODE_ITEM.type, typeName: NODE_ITEM.typeName, name: "", childrens: {}}
-		})
+					if(isAllNodeDataWasSetted()) {
+						NewNodeFormSubmitButton.set("removeAttribute", "disabled")
+					}
+				}
+			})
 
-		GameNodesList.appendChild(button)
-		NewNodeTypeButtons.push(button)
+		GameNodesList.set("appendChild", Button.getDOMElement())
+		NewNodeTypeButtons.push(Button)
 		index++
 	}
 
-	//Create container for error message, submit button and input for new node name
-	NewNodeNameInput = document.createElement("input")
-	NewNodeFormSubmitButton = document.createElement("button")
-	NewNodeInputAndButtonContainer = document.createElement("div")
-	NewNodeValidationError = document.createElement("section")
+	//Create root element
+	GameNodesListForm = new UIElement("form")
+	GameNodesListForm
+		.set("setAttribute", "class", CLFLEX_CONTAINER_SELECTOR)
+		.set("append", GameNodesList.getDOMElement(), NewNodeInputAndButtonContainer.getDOMElement())
+		.addEvent("submit", insertNodeGameNode)
 
-	NewNodeValidationError.classList.add("game-nodes-input-error")
-	NewNodeValidationError.setAttribute("hidden", "true")
-
-	NewNodeNameInput.setAttribute("placeholder", "Node name")
-	NewNodeNameInput.classList.add("game-nodes-node-name-input")
-
-	NewNodeFormSubmitButton.setAttribute("disabled", "true")
-	NewNodeFormSubmitButton.textContent = "Insert new node"
-	NewNodeFormSubmitButton.classList.add("game-nodes-form-submit-button")
-
-	NewNodeInputAndButtonContainer.classList.add(...["game-nodes-new-node-data-container", CLFLEX_CONTAINER_SELECTOR])
-	NewNodeInputAndButtonContainer.appendChild(NewNodeNameInput)
-	NewNodeInputAndButtonContainer.appendChild(NewNodeValidationError)
-	NewNodeInputAndButtonContainer.appendChild(NewNodeFormSubmitButton)
-
-	//Append it all to root node
-	GameNodesListForm.appendChild(GameNodesList)
-	GameNodesListForm.appendChild(NewNodeInputAndButtonContainer)
-
-	//Append it all to modal
-	GameNodesModal.getNode("GameNodesModalContainer").querySelector(".game-nodes-modal-body").appendChild(GameNodesListForm)
-
-	GameNodesListForm.addEventListener("submit", function(event) {
-		event.preventDefault()
-
-		//Validate node name
-		if(NewNodeNameInput.value.length < MIN_NODE_NAME_LENGTH) {
-			NewNodeValidationError.textContent = "Node name is not correct!"
-			NewNodeValidationError.removeAttribute("hidden")
-		} else if(!newGameNodeData) {
-			//Validate not selected new node type
-			NewNodeValidationError.textContent = "You need to select node type!"
-			NewNodeValidationError.removeAttribute("hidden")
-		} else {
-			//Create node 
-			let data = { type: newGameNodeData.type, typeName: newGameNodeData.typeName, name: NewNodeNameInput.value, childrens: {}}
-			//Deinit nodes list
-			DeinitGameNodesModalList()
-			//Hidde nodes modal
-			GameNodesModal.getNode("GameNodesModalContainer").classList.add("game-nodes-modal-hidden")
-		}
-	})
+	//Append nodes list in to the game nodes modal
+	GameNodesModal
+		.getModuleGlobalVar("GameNodesModalContainer")
+		.getDOMElement()
+		.querySelector(".game-nodes-modal-body")
+		.appendChild(GameNodesListForm.getDOMElement())
 }
 
-export function getNode(nodeName) {
-	switch(nodeName) {
+export function getModuleGlobalVar(varName) {
+	switch(varName) {
 		case "GameNodesListForm":
 			return GameNodesListForm
 		case "GameNodesList":

@@ -12,7 +12,14 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	gap: 0.25rem;
+	gap: var(--ui-flex-gap-small);
+}
+
+.rflex-center-center-medium {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--ui-flex-gap-medium);
 }
 
 .rflex-center-spacebetween-none {

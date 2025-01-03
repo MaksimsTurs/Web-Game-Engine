@@ -50,4 +50,5 @@
 
 .game-nodes-form-submit-button:disabled {
 	background-color: rgb(185, 171, 255);
+	cursor: auto;
 }

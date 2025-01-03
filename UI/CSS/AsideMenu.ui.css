@@ -1,7 +1,7 @@
 .aside-menu-container {
 	background-color: var(--ui-root-color-hover);
 	position: relative;
-	width: 10rem;
+	width: 13rem;
 	height: 100%;
 }
 
@@ -14,6 +14,7 @@
 	box-shadow: 0 2px 3px var(--ui-root-color);
 	transition: all var(--transition-very-fast) ease;
 	width: 0.5rem;
+	flex-shrink: 0;
 	height: 100%;
 	cursor: e-resize;
 }
@@ -21,4 +22,16 @@
 .aside-menu-resizer:active {
 	transition: all var(--transition-very-fast) ease;
 	background-color: var(--ui-root-color);
+}
+
+.aside-menu-nodes-list-empty {
+	font-size: 1.25rem;
+	height: 100%;
+	padding: 0 1rem;
+	color: white;
+}
+
+.aside-menu-nodes-list-empty > svg {
+	flex-shrink: 0;
+	width: 1.8rem;
 }
