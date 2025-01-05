@@ -5,11 +5,6 @@
 	height: 100%;
 }
 
-.aside-menu-nodes-list {
-	flex-grow: 1;
-	height: 100%;
-}
-
 .aside-menu-resizer {
 	box-shadow: 0 2px 3px var(--ui-root-color);
 	transition: all var(--transition-very-fast) ease;

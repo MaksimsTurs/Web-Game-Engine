@@ -32,9 +32,9 @@ class UIElement {
 		return this.#element
 	}
 
-	addEvent(eventName, callback) {
-		this.#element.addEventListener(eventName, callback)
-		this.#eventReferences.push({ eventName, callback })
+	addEvent(eventName, callback, options = {}) {
+		this.#element.addEventListener(eventName, callback, options)
+		this.#eventReferences.push({ eventName, callback, options })
 	}
 
 	removeEvent(eventName, callback) {

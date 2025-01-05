@@ -1,0 +1,16 @@
+.aside-menu-nodes-list {
+	flex-grow: 1;
+	height: 100%;
+}
+
+.aside-menu-nodes-list-item {
+	transition: var(--transition-very-fast);
+	width: 100%;
+	color: white;
+	cursor: pointer;
+}
+
+.aside-menu-nodes-list-item:hover {
+	transition: var(--transition-very-fast);
+	background-color: var(--ui-root-color);
+}

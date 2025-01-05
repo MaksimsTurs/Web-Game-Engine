@@ -50,23 +50,44 @@ function insertNodeGameNode(event) {
 		NewNodeValidationError.set("removeAttribute", "hidden")
 	} else {	
 		//Create aside menu node 
-		let data = { type: newGameNodeData.type, typeName: newGameNodeData.typeName, name: NewNodeNameInput.get("value"), childrens: {}}
-		
-		AsideMenu.getModuleGlobalVar("AsideMenuNodes").update(tree => {
-			let position = localStorage.getItem(LOCAL_STORAGE_ADD_NODE_POSITION_KEY)
-
-			if(position === "root") {
-				return data
+		let data = { 
+			[NewNodeNameInput.get("value")]: {
+				type: newGameNodeData.type, 
+				typeName: newGameNodeData.typeName, 
+				name: NewNodeNameInput.get("value"), 
+				childrens: {}
 			}
-		})
+		}
 
-		//Remove nodes modal list
+		//Remove nodes modal and nodes modal list
+		GameNodesModal.DeinitGameNodesModal()
 		DeinitGameNodesModalList()
-		//Hidde nodes modal
-		GameNodesModal.getModuleGlobalVar("GameNodesModalContainer").getDOMElement().classList.add("game-nodes-modal-hidden")
+
+		AsideMenu
+			.getModuleGlobalVar("AsideMenuNodes")
+			.update(function(tree) {
+				let position = localStorage.getItem(LOCAL_STORAGE_ADD_NODE_POSITION_KEY)
+
+				if(position === "root") {
+					return data
+				}
+
+				const awayToNewNode = position.replace(/root./, "").split(/\./)
+
+				awayToNewNode.reduce(function(prev, curr, index) {
+					if(index === awayToNewNode.length - 1) {
+						prev[curr].childrens = data
+						return
+					}
+					
+					return prev[curr].childrens
+				}, tree)
+
+				return tree
+			})
 	}
 }
-
+ 
 function inputNewNodeName() {
 	if(isAllNodeDataWasSetted()) {
 		NewNodeFormSubmitButton.set("removeAttribute", "disabled")

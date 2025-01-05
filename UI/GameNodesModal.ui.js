@@ -1,8 +1,9 @@
 import UIElement from "../UI-Engine/core/UIElement.core.js"
+import DOMElementManager from "../UI-Engine/core/DOM-Element-Manager/DOMElementManager.core.js"
+
+import { LOCAL_STORAGE_ADD_NODE_POSITION_KEY } from "./const.js"
 
 import * as GameNodesModalList from "./GameNodesModalList.ui.js"
-
-import DOMElementManager from "../UI-Engine/core/DOM-Element-Manager/DOMElementManager.core.js"
 
 let GameNodesModalContainer = null
 let GameNodesModalBody = null
